@@ -1,4 +1,4 @@
-import { L as LokiOptions } from './shared/pino-loki.57583884.js';
+import { L as LokiOptions } from './shared/pino-loki.bec8a9b6.js';
 
 declare const createPinoLokiConfigFromArgs: () => LokiOptions;
 

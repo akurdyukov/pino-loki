@@ -35,7 +35,7 @@ var __privateMethod$1 = (obj, member, method) => {
   __accessCheck$1(obj, member, "access private method");
   return method;
 };
-var _propsToLabels, _levelMap, _messageBuilder, _labelsBuilder, _buildTimestamp, buildTimestamp_fn, _stringifyLog, stringifyLog_fn, _buildLabelsFromProps, buildLabelsFromProps_fn;
+var _propsToLabels, _levelMap, _messageField, _buildTimestamp, buildTimestamp_fn, _stringifyLog, stringifyLog_fn, _buildLabelsFromProps, buildLabelsFromProps_fn;
 const NANOSECONDS_LENGTH = 19;
 class LogBuilder {
   constructor(options) {
@@ -52,8 +52,7 @@ class LogBuilder {
     __privateAdd$1(this, _buildLabelsFromProps);
     __privateAdd$1(this, _propsToLabels, void 0);
     __privateAdd$1(this, _levelMap, void 0);
-    __privateAdd$1(this, _messageBuilder, void 0);
-    __privateAdd$1(this, _labelsBuilder, void 0);
+    __privateAdd$1(this, _messageField, void 0);
     __privateSet$1(this, _propsToLabels, options?.propsToLabels || []);
     __privateSet$1(this, _levelMap, Object.assign(
       {
@@ -66,8 +65,7 @@ class LogBuilder {
       },
       options?.levelMap
     ));
-    __privateSet$1(this, _messageBuilder, options?.messageBuilder);
-    __privateSet$1(this, _labelsBuilder, options?.labelsBuilder);
+    __privateSet$1(this, _messageField, options?.messageField);
   }
   /**
    * Convert a level to a human-readable status
@@ -84,12 +82,8 @@ class LogBuilder {
     const propsLabels = __privateMethod$1(this, _buildLabelsFromProps, buildLabelsFromProps_fn).call(this, options.log);
     const hostname = options.log.hostname;
     options.log.hostname = void 0;
-    const message = __privateGet$1(this, _messageBuilder) ? __privateGet$1(this, _messageBuilder).call(this, options.log) : __privateMethod$1(this, _stringifyLog, stringifyLog_fn).call(this, options.log, options.convertArrays);
-    const labels = __privateGet$1(this, _labelsBuilder) ? __privateGet$1(this, _labelsBuilder).call(this, {
-      ...Object.fromEntries(
-        Object.entries(options.log).filter(([key]) => key !== "level" && key !== "time")
-      )
-    }) : {
+    const message = __privateGet$1(this, _messageField) ? options.log[__privateGet$1(this, _messageField)] : __privateMethod$1(this, _stringifyLog, stringifyLog_fn).call(this, options.log, options.convertArrays);
+    const labels = {
       ...options.additionalLabels,
       ...propsLabels
     };
@@ -105,8 +99,7 @@ class LogBuilder {
 }
 _propsToLabels = new WeakMap();
 _levelMap = new WeakMap();
-_messageBuilder = new WeakMap();
-_labelsBuilder = new WeakMap();
+_messageField = new WeakMap();
 _buildTimestamp = new WeakSet();
 buildTimestamp_fn = function(log, replaceTimestamp) {
   if (replaceTimestamp) {
@@ -187,8 +180,7 @@ class LogPusher {
     __privateSet(this, _logBuilder, new LogBuilder({
       levelMap: options.levelMap,
       propsToLabels: options.propsToLabels,
-      messageBuilder: options.messageBuilder,
-      labelsBuilder: options.labelsBuilder
+      messageField: options.messageField
     }));
   }
   /**

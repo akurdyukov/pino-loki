@@ -5,10 +5,6 @@ declare enum LokiLogLevel {
     Warning = "warning",
     Critical = "critical"
 }
-interface PinoLog {
-    level: number;
-    [key: string]: any;
-}
 interface LokiOptions {
     host: string;
     timeout?: number;
@@ -29,8 +25,7 @@ interface LokiOptions {
     headers?: Record<string, string>;
     propsToLabels?: string[];
     convertArrays?: boolean;
-    messageBuilder?: (log: PinoLog) => string;
-    labelsBuilder?: (log: object) => Record<string, string>;
+    messageField?: string;
 }
 
 export { type LokiOptions as L, LokiLogLevel as a };
